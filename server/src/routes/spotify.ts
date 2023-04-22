@@ -582,17 +582,40 @@ router.get(
 
 router.get('/playlists', logged, withHttpClient, async (req, res) => {
   const { client, user } = req as LoggedRequest & SpotifyRequest;
+  const { all } = req.query as { all?: string };
 
   try {
     const playlists = await client.playlists();
     return res
       .status(200)
-      .send(playlists.filter(playlist => playlist.owner.id === user.spotifyId));
+      .send(
+        playlists.filter(
+          playlist => all !== undefined || playlist.owner.id === user.spotifyId,
+        ),
+      );
   } catch (e) {
     logger.error(e);
     return res.status(500).end();
   }
 });
+
+router.get(
+  '/playlists/:id/tracks',
+  logged,
+  withHttpClient,
+  async (req, res) => {
+    const { client, user } = req as LoggedRequest & SpotifyRequest;
+    const { id } = req.params as { id: string };
+
+    try {
+      const tracks = await client.playlistTracks(id);
+      return res.status(200).send(tracks);
+    } catch (e) {
+      logger.error(e);
+      return res.status(500).end();
+    }
+  },
+);
 
 const createPlaylistBase = z.object({
   playlistId: z.string().optional(),

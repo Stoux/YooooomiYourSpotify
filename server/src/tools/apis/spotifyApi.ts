@@ -6,19 +6,12 @@ import { logger } from '../logger';
 import { chunk, wait } from '../misc';
 import { Spotify } from '../oauth/Provider';
 import { PromiseQueue } from '../queue';
+import {Playlist, SpotifyPlaylist, SpotifyPlaylistTrack} from '../../database/schemas/playlist';
 
 export const squeue = new PromiseQueue();
 
 interface SpotifyMe {
   id: string;
-}
-
-interface SpotifyPlaylist {
-  id: string;
-  name: string;
-  owner: {
-    id: string;
-  };
 }
 
 export class SpotifyAPI {
@@ -84,9 +77,18 @@ export class SpotifyAPI {
   }
 
   public async playlists() {
-    const items: SpotifyPlaylist[] = [];
+    return this.paginatedFetchAll<SpotifyPlaylist>('/me/playlists?limit=50');
+  }
 
-    let nextUrl = '/me/playlists?limit=50';
+  public async playlistTracks(playlist: string) {
+    return this.paginatedFetchAll<SpotifyPlaylistTrack>(
+      `/playlists/${playlist}/tracks?limit=50`,
+    );
+  }
+
+  private async paginatedFetchAll<T>(startUrl: string): Promise<T[]> {
+    const items: T[] = [];
+    let nextUrl = startUrl;
     while (nextUrl) {
       const thisUrl = nextUrl;
       // eslint-disable-next-line no-await-in-loop
