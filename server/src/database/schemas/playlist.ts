@@ -32,6 +32,9 @@ export type SpotifyPlaylist = Omit<
     total: number;
     items?: SpotifyTrack[];
   };
+  followers: {
+    total: number;
+  };
 };
 
 /**
