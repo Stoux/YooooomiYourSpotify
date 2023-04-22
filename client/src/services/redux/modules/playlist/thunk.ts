@@ -1,12 +1,12 @@
 import { api } from '../../../apis/api';
 import { myAsyncThunk } from '../../tools';
-import { Playlist, PlaylistContext } from './types';
+import { SpotifyPlaylist, PlaylistContext } from './types';
 
-export const fetchPlaylists = myAsyncThunk<Playlist[] | null, void>(
+export const fetchPlaylists = myAsyncThunk<SpotifyPlaylist[] | null, void>(
   '@playlist/fetch',
   async () => {
     try {
-      const { data } = await api.getPlaylists();
+      const { data } = await api.getSpotifyPlaylists();
       return data;
     } catch (e) {
       console.error(e);

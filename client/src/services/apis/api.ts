@@ -2,7 +2,10 @@
 import Axios from 'axios';
 import { AdminAccount } from '../redux/modules/admin/reducer';
 import { ImporterState } from '../redux/modules/import/types';
-import { Playlist, PlaylistContext } from '../redux/modules/playlist/types';
+import {
+  SpotifyPlaylist,
+  PlaylistContext,
+} from '../redux/modules/playlist/types';
 import { User } from '../redux/modules/user/types';
 import {
   Album,
@@ -464,7 +467,9 @@ export const api = {
         artists: { count: number; artist: Artist }[];
       }[]
     >('/spotify/top/hour-repartition/artists', { start, end }),
-  getPlaylists: () => get<Playlist[]>('/spotify/playlists'),
+  getSpotifyPlaylists: (all: boolean = false) =>
+    get<SpotifyPlaylist[]>('/spotify/playlists', all ? { all: '' } : {}),
+  getFollowedPlaylists: () => get<string[]>('/playlist/followed'),
   addToPlaylist: (
     id: string | undefined,
     name: string | undefined,

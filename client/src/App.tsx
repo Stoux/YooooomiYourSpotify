@@ -28,6 +28,7 @@ import { selectDarkMode } from './services/redux/modules/user/selector';
 import PlaylistDialog from './components/PlaylistDialog';
 import TrackStats from './scenes/TrackStats';
 import LongestSessions from './scenes/LongestSessions';
+import FollowedPlaylists from './scenes/Playlists';
 
 function App() {
   const dark = useSelector(selectDarkMode);
@@ -102,6 +103,14 @@ function App() {
                 element={
                   <PrivateRoute>
                     <Artists />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/playlists/following"
+                element={
+                  <PrivateRoute>
+                    <FollowedPlaylists />
                   </PrivateRoute>
                 }
               />

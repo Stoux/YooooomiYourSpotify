@@ -21,6 +21,8 @@ import {
   ShareOutlined,
   Speed,
   SpeedOutlined,
+  ListAlt,
+  ListAltOutlined,
 } from '@mui/icons-material';
 import s from './index.module.css';
 import { useShareLink } from '../../../services/hooks/hooks';
@@ -82,6 +84,17 @@ const links = [
         link: '/top/albums',
         icon: <AlbumOutlined />,
         iconOn: <Album />,
+      },
+    ],
+  },
+  {
+    label: 'Playlist',
+    items: [
+      {
+        label: 'Following',
+        link: '/playlists/following',
+        icon: <ListAltOutlined />,
+        iconOn: <ListAlt />,
       },
     ],
   },
